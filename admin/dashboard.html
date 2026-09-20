@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard — OVIA GYM</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .admin-nav { display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 0; border-bottom: 1px solid var(--steel); margin-bottom: 40px; }
+  .admin-nav .logo { font-family: var(--font-display); font-size: 1.5rem; }
+  .admin-nav .logo span { color: var(--crimson); }
+  .tabs { display: flex; gap: 4px; margin-bottom: 40px; border-bottom: 1px solid var(--steel); }
+  .tab-btn { background: none; border: none; color: var(--text-muted); padding: 14px 20px;
+    font-family: var(--font-body); font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    border-bottom: 2px solid transparent; }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--crimson); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .admin-form { background: var(--bg-panel); border: 1px solid var(--steel); padding: 28px; margin-bottom: 32px; }
+  .admin-form h3 { margin-bottom: 20px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+  .item-list { display: flex; flex-direction: column; gap: 12px; }
+  .item-row { display: flex; align-items: center; gap: 16px; padding: 14px 18px;
+    background: var(--bg-panel); border: 1px solid var(--steel); }
+  .item-row img { width: 48px; height: 48px; object-fit: cover; flex-shrink: 0; }
+  .item-row .info { flex: 1; min-width: 0; }
+  .item-row .info .t { font-weight: 600; }
+  .item-row .info .s { color: var(--text-muted); font-size: 0.85rem; }
+  .item-row .actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .icon-btn { background: none; border: 1px solid var(--steel); color: var(--text-muted);
+    padding: 8px 14px; font-size: 0.82rem; cursor: pointer; }
+  .icon-btn:hover { color: var(--text); border-color: var(--text-muted); }
+  .icon-btn.danger:hover { color: var(--crimson-bright); border-color: var(--crimson-bright); }
+  .toggle-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--text-muted); }
+  .empty-note { color: var(--text-muted); font-size: 0.9rem; padding: 20px 0; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="admin-nav">
+    <div class="logo">OVIA<span>GYM</span> · Admin</div>
+    <button class="btn btn-outline" id="logout-btn">Log out</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="offers">Offers</button>
+    <button class="tab-btn" data-tab="trainers">Trainers</button>
+    <button class="tab-btn" data-tab="gallery">Gallery</button>
+  </div>
+
+  <!-- OFFERS -->
+  <div class="tab-panel active" id="panel-offers">
+    <form class="admin-form" id="offer-form">
+      <h3>Add offer</h3>
+      <div class="field">
+        <label for="offer-title">Title</label>
+        <input type="text" id="offer-title" placeholder="e.g. 20% off annual membership — this month only" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Add offer</button>
+      <p class="form-status" id="offer-status"></p>
+    </form>
+    <div class="item-list" id="offers-list"></div>
+  </div>
+
+  <!-- TRAINERS -->
+  <div class="tab-panel" id="panel-trainers">
+    <form class="admin-form" id="trainer-form">
+      <h3>Add trainer</h3>
+      <div class="form-row">
+        <div class="field">
+          <label for="trainer-name">Name</label>
+          <input type="text" id="trainer-name" required>
+        </div>
+        <div class="field">
+          <label for="trainer-role">Role</label>
+          <input type="text" id="trainer-role" placeholder="e.g. Head Strength Coach">
+        </div>
+      </div>
+      <div class="field">
+        <label for="trainer-bio">Bio</label>
+        <textarea id="trainer-bio" placeholder="Short bio, certifications, specialty"></textarea>
+      </div>
+      <div class="field">
+        <label for="trainer-photo">Photo</label>
+        <input type="file" id="trainer-photo" accept="image/*">
+      </div>
+      <button type="submit" class="btn btn-primary">Add trainer</button>
+      <p class="form-status" id="trainer-status"></p>
+    </form>
+    <div class="item-list" id="trainers-list"></div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="tab-panel" id="panel-gallery">
+    <form class="admin-form" id="gallery-form">
+      <h3>Add photo</h3>
+      <div class="field">
+        <label for="gallery-caption">Caption</label>
+        <input type="text" id="gallery-caption" placeholder="Optional">
+      </div>
+      <div class="field">
+        <label for="gallery-photo">Photo</label>
+        <input type="file" id="gallery-photo" accept="image/*" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Upload photo</button>
+      <p class="form-status" id="gallery-status"></p>
+    </form>
+    <div class="item-list" id="gallery-list"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/supabase/2.45.4/supabase.min.js"></script>
+<script src="../js/supabase-client.js"></script>
+<script>
+// --------------------------------------------------------------------------
+// Auth guard
+// --------------------------------------------------------------------------
+(async () => {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) window.location.href = 'login.html';
+})();
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT') window.location.href = 'login.html';
+});
+
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  await supabaseClient.auth.signOut();
+});
+
+// --------------------------------------------------------------------------
+// Tabs
+// --------------------------------------------------------------------------
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+
+// --------------------------------------------------------------------------
+// OFFERS
+// --------------------------------------------------------------------------
+async function loadOffersAdmin() {
+  const list = document.getElementById('offers-list');
+  const { data, error } = await supabaseClient.from('offers').select('*').order('created_at', { ascending: false });
+  if (error) { list.innerHTML = `<p class="empty-note">${escapeHtml(error.message)}</p>`; return; }
+  if (!data.length) { list.innerHTML = `<p class="empty-note">No offers yet.</p>`; return; }
+
+  list.innerHTML = data.map(o => `
+    <div class="item-row">
+      <div class="info">
+        <div class="t">${escapeHtml(o.title)}</div>
+        <div class="s">${o.active ? 'Active — showing on site' : 'Hidden'}</div>
+      </div>
+      <div class="actions">
+        <button class="icon-btn" onclick="toggleOffer('${o.id}', ${!o.active})">${o.active ? 'Hide' : 'Show'}</button>
+        <button class="icon-btn danger" onclick="deleteOffer('${o.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('offer-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const status = document.getElementById('offer-status');
+  const title = document.getElementById('offer-title').value.trim();
+  status.textContent = 'Saving...'; status.className = 'form-status';
+
+  const { error } = await supabaseClient.from('offers').insert({ title, active: true });
+  if (error) { status.textContent = error.message; status.className = 'form-status error'; return; }
+
+  status.textContent = 'Added.'; status.className = 'form-status ok';
+  document.getElementById('offer-form').reset();
+  loadOffersAdmin();
+});
+
+async function toggleOffer(id, active) {
+  await supabaseClient.from('offers').update({ active }).eq('id', id);
+  loadOffersAdmin();
+}
+async function deleteOffer(id) {
+  if (!confirm('Delete this offer?')) return;
+  await supabaseClient.from('offers').delete().eq('id', id);
+  loadOffersAdmin();
+}
+
+// --------------------------------------------------------------------------
+// TRAINERS
+// --------------------------------------------------------------------------
+async function loadTrainersAdmin() {
+  const list = document.getElementById('trainers-list');
+  const { data, error } = await supabaseClient.from('trainers').select('*').order('sort_order', { ascending: true });
+  if (error) { list.innerHTML = `<p class="empty-note">${escapeHtml(error.message)}</p>`; return; }
+  if (!data.length) { list.innerHTML = `<p class="empty-note">No trainers yet.</p>`; return; }
+
+  list.innerHTML = data.map(t => `
+    <div class="item-row">
+      <img src="${escapeHtml(t.photo_url || '../assets/placeholder-trainer.jpg')}" alt="">
+      <div class="info">
+        <div class="t">${escapeHtml(t.name)}</div>
+        <div class="s">${escapeHtml(t.role || '')}</div>
+      </div>
+      <div class="actions">
+        <button class="icon-btn danger" onclick="deleteTrainer('${t.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('trainer-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const status = document.getElementById('trainer-status');
+  const name = document.getElementById('trainer-name').value.trim();
+  const role = document.getElementById('trainer-role').value.trim();
+  const bio = document.getElementById('trainer-bio').value.trim();
+  const file = document.getElementById('trainer-photo').files[0];
+
+  status.textContent = 'Saving...'; status.className = 'form-status';
+
+  let photo_url = null;
+  if (file) {
+    const path = `trainers/${Date.now()}-${file.name}`;
+    const { error: upErr } = await supabaseClient.storage.from('gym-images').upload(path, file);
+    if (upErr) { status.textContent = upErr.message; status.className = 'form-status error'; return; }
+    photo_url = supabaseClient.storage.from('gym-images').getPublicUrl(path).data.publicUrl;
+  }
+
+  const { error } = await supabaseClient.from('trainers').insert({ name, role, bio, photo_url, sort_order: Date.now() });
+  if (error) { status.textContent = error.message; status.className = 'form-status error'; return; }
+
+  status.textContent = 'Added.'; status.className = 'form-status ok';
+  document.getElementById('trainer-form').reset();
+  loadTrainersAdmin();
+});
+
+async function deleteTrainer(id) {
+  if (!confirm('Delete this trainer?')) return;
+  await supabaseClient.from('trainers').delete().eq('id', id);
+  loadTrainersAdmin();
+}
+
+// --------------------------------------------------------------------------
+// GALLERY
+// --------------------------------------------------------------------------
+async function loadGalleryAdmin() {
+  const list = document.getElementById('gallery-list');
+  const { data, error } = await supabaseClient.from('gallery').select('*').order('sort_order', { ascending: false });
+  if (error) { list.innerHTML = `<p class="empty-note">${escapeHtml(error.message)}</p>`; return; }
+  if (!data.length) { list.innerHTML = `<p class="empty-note">No photos yet.</p>`; return; }
+
+  list.innerHTML = data.map(g => `
+    <div class="item-row">
+      <img src="${escapeHtml(g.image_url)}" alt="">
+      <div class="info">
+        <div class="t">${escapeHtml(g.caption || 'Untitled')}</div>
+      </div>
+      <div class="actions">
+        <button class="icon-btn danger" onclick="deleteGalleryItem('${g.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('gallery-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const status = document.getElementById('gallery-status');
+  const caption = document.getElementById('gallery-caption').value.trim();
+  const file = document.getElementById('gallery-photo').files[0];
+  if (!file) return;
+
+  status.textContent = 'Uploading...'; status.className = 'form-status';
+
+  const path = `gallery/${Date.now()}-${file.name}`;
+  const { error: upErr } = await supabaseClient.storage.from('gym-images').upload(path, file);
+  if (upErr) { status.textContent = upErr.message; status.className = 'form-status error'; return; }
+  const image_url = supabaseClient.storage.from('gym-images').getPublicUrl(path).data.publicUrl;
+
+  const { error } = await supabaseClient.from('gallery').insert({ image_url, caption, sort_order: Date.now() });
+  if (error) { status.textContent = error.message; status.className = 'form-status error'; return; }
+
+  status.textContent = 'Uploaded.'; status.className = 'form-status ok';
+  document.getElementById('gallery-form').reset();
+  loadGalleryAdmin();
+});
+
+async function deleteGalleryItem(id) {
+  if (!confirm('Delete this photo?')) return;
+  await supabaseClient.from('gallery').delete().eq('id', id);
+  loadGalleryAdmin();
+}
+
+// --------------------------------------------------------------------------
+// Init
+// --------------------------------------------------------------------------
+loadOffersAdmin();
+loadTrainersAdmin();
+loadGalleryAdmin();
+</script>
+</body>
+</html>
