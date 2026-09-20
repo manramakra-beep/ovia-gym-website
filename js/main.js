@@ -55,18 +55,50 @@ async function loadTrainers(targetSelector, limit) {
       return;
     }
 
-    target.innerHTML = data.map(t => `
-      <div class="trainer">
-        <img class="trainer-photo" src="${escapeHtml(t.photo_url || 'assets/placeholder-trainer.jpg')}" alt="${escapeHtml(t.name)}">
-        <div class="trainer-name">${escapeHtml(t.name)}</div>
-        <div class="trainer-role">${escapeHtml(t.role || '')}</div>
-        <div class="trainer-bio">${escapeHtml(t.bio || '')}</div>
+    target.classList.add('trainers-carousel');
+    target.innerHTML = `<div class="trainers-track">${data.map(t => `
+      <div class="trainer-card">
+        <div class="trainer-box">
+          <img class="trainer-photo" src="${escapeHtml(t.photo_url || 'assets/placeholder-trainer.jpg')}" alt="${escapeHtml(t.name)}">
+          <div class="trainer-name">${escapeHtml(t.name)}</div>
+          <div class="trainer-role">${escapeHtml(t.role || '')}</div>
+          <div class="trainer-bio">${escapeHtml(t.bio || '')}</div>
+        </div>
       </div>
-    `).join('');
+    `).join('')}</div>`;
+
+    initTrainerCarousel(target, data.length);
   } catch (err) {
     console.error('Could not load trainers:', err.message);
     target.innerHTML = `<p class="lede">Trainer profiles coming soon.</p>`;
   }
+}
+
+// How many trainer cards are visible at once, based on viewport width
+function getVisibleTrainerCount() {
+  const w = window.innerWidth;
+  if (w <= 640) return 1;
+  if (w <= 900) return 2;
+  return 3;
+}
+
+// Auto-advances the trainer carousel one card at a time, smoothly, on a loop
+function initTrainerCarousel(container, total) {
+  const track = container.querySelector('.trainers-track');
+  if (!track) return;
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+  if (total <= getVisibleTrainerCount()) return; // nothing to slide
+
+  let index = 0;
+  setInterval(() => {
+    const visible = getVisibleTrainerCount();
+    if (total <= visible) { track.style.transform = 'translateX(0)'; index = 0; return; }
+    const maxIndex = total - visible;
+    index = index >= maxIndex ? 0 : index + 1;
+    track.style.transform = `translateX(-${(100 / visible) * index}%)`;
+  }, 3500);
 }
 
 // --------------------------------------------------------------------------
