@@ -285,8 +285,20 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   gap: 24px;
   padding: 24px 0;
   border-top: 1px solid var(--steel);
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 .class-list .class-row:last-child { border-bottom: 1px solid var(--steel); }
+
+.class-row.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .class-row { transition: none; opacity: 1; transform: none; }
+}
 
 .class-row .idx {
   font-family: var(--font-display);
