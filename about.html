@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — OVIA GYM</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo">OVIA<span>GYM</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="classes.html">Classes</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="offers-banner" id="offers-banner">
+  <div class="offers-track" id="offers-track"></div>
+</div>
+
+<header class="page-header">
+  <div class="wrap">
+    <div class="eyebrow">ABOUT US</div>
+    <h1>Built by people<br>who lift.</h1>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap" style="max-width:760px;">
+    <p class="lede" style="max-width:none; margin-bottom:24px;">
+      OVIA GYM started in Pollachi with one idea: training should be honest. No overcrowded floors,
+      no equipment queues, no trend-chasing classes that disappear in a month. Just proper coaching,
+      real equipment, and a space that takes your training as seriously as you do.
+    </p>
+    <p class="lede" style="max-width:none;">
+      Every coach on our floor is certified and trains alongside our members — not behind a desk.
+      Whether you're here for your first deadlift or your hundredth, the standard doesn't change.
+    </p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head"><div><h2>Meet the coaches</h2></div></div>
+    <div class="trainers-row" id="trainers-target">
+      <p class="lede">Trainer profiles coming soon.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head"><div><h2>Inside the gym</h2></div></div>
+    <div class="gallery-grid" id="gallery-target"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div>
+      <div class="logo">OVIA<span>GYM</span></div>
+      <p>Built for people who show up. Strength, conditioning and coaching in Pollachi.</p>
+    </div>
+    <div>
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="classes.html">Classes</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Hours</h4>
+      <ul>
+        <li>Mon–Sat: 5:00 AM – 10:00 PM</li>
+        <li>Sun: 7:00 AM – 1:00 PM</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap bottom">
+    <span>© 2026 OVIA GYM. All rights reserved.</span>
+    <a href="admin/login.html" style="color:var(--text-muted);">Staff login</a>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/supabase/2.45.4/supabase.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script>
+  loadOffersBanner();
+  loadTrainers('#trainers-target');
+  loadGallery('#gallery-target', 8);
+</script>
+</body>
+</html>

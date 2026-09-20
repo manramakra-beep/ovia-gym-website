@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OVIA GYM — Train Different</title>
+<meta name="description" content="OVIA GYM — strength, conditioning and community. Join a gym built around real results.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo">OVIA<span>GYM</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+    <ul>
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="classes.html">Classes</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="offers-banner" id="offers-banner">
+  <div class="offers-track" id="offers-track"></div>
+</div>
+
+<header class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow">OVIA GYM · POLLACHI</div>
+    <h1>TRAIN<br>DIFFERENT.</h1>
+    <p class="lede">Strength training, conditioning and coaching built around one thing: results you can measure. No gimmicks, no crowded floors — just the work.</p>
+    <div class="hero-actions">
+      <a href="contact.html" class="btn btn-primary">Join Now</a>
+      <a href="classes.html" class="btn btn-outline">See Classes</a>
+    </div>
+  </div>
+  <div class="hero-media" style="background-image: url('assets/hero.jpg');"></div>
+</header>
+
+<section class="stats">
+  <div class="wrap">
+    <div class="stat"><div class="num">1200+</div><div class="label">Active members</div></div>
+    <div class="stat"><div class="num">8</div><div class="label">Years running</div></div>
+    <div class="stat"><div class="num">12</div><div class="label">Expert trainers</div></div>
+    <div class="stat"><div class="num">20+</div><div class="label">Weekly classes</div></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>This week's classes</h2>
+      </div>
+      <a href="classes.html" class="btn btn-outline">Full schedule</a>
+    </div>
+    <div class="class-list">
+      <div class="class-row">
+        <div class="idx">01</div>
+        <div><div class="name">Strength Training</div><div class="desc">Barbell fundamentals, progressive overload</div></div>
+        <div class="schedule">Mon / Wed / Fri — 6:00 AM</div>
+        <div class="level">All levels</div>
+      </div>
+      <div class="class-row">
+        <div class="idx">02</div>
+        <div><div class="name">HIIT Circuit</div><div class="desc">High intensity, full body conditioning</div></div>
+        <div class="schedule">Tue / Thu — 7:00 AM</div>
+        <div class="level">Intermediate</div>
+      </div>
+      <div class="class-row">
+        <div class="idx">03</div>
+        <div><div class="name">Powerlifting</div><div class="desc">Squat, bench, deadlift technique</div></div>
+        <div class="schedule">Sat — 8:00 AM</div>
+        <div class="level">Advanced</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head">
+      <div><h2>Meet the coaches</h2></div>
+    </div>
+    <div class="trainers-row" id="trainers-target">
+      <p class="lede">Trainer profiles coming soon.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Your first session is on us.</h2>
+    <a href="contact.html" class="btn btn-outline">Book a free trial</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div>
+      <div class="logo">OVIA<span>GYM</span></div>
+      <p>Built for people who show up. Strength, conditioning and coaching in Pollachi.</p>
+    </div>
+    <div>
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="classes.html">Classes</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Hours</h4>
+      <ul>
+        <li>Mon–Sat: 5:00 AM – 10:00 PM</li>
+        <li>Sun: 7:00 AM – 1:00 PM</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap bottom">
+    <span>© 2026 OVIA GYM. All rights reserved.</span>
+    <a href="admin/login.html" style="color:var(--text-muted);">Staff login</a>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/supabase/2.45.4/supabase.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script>
+  loadOffersBanner();
+  loadTrainers('#trainers-target', 4);
+</script>
+</body>
+</html>

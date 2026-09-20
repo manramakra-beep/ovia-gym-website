@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classes — OVIA GYM</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo">OVIA<span>GYM</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="classes.html" class="active">Classes</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="offers-banner" id="offers-banner">
+  <div class="offers-track" id="offers-track"></div>
+</div>
+
+<header class="page-header">
+  <div class="wrap">
+    <div class="eyebrow">WEEKLY SCHEDULE</div>
+    <h1>Classes</h1>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <div class="class-list">
+      <div class="class-row">
+        <div class="idx">01</div>
+        <div><div class="name">Strength Training</div><div class="desc">Barbell fundamentals, progressive overload, form coaching</div></div>
+        <div class="schedule">Mon / Wed / Fri — 6:00 AM</div>
+        <div class="level">All levels</div>
+      </div>
+      <div class="class-row">
+        <div class="idx">02</div>
+        <div><div class="name">HIIT Circuit</div><div class="desc">High intensity intervals, full body conditioning</div></div>
+        <div class="schedule">Tue / Thu — 7:00 AM</div>
+        <div class="level">Intermediate</div>
+      </div>
+      <div class="class-row">
+        <div class="idx">03</div>
+        <div><div class="name">Powerlifting</div><div class="desc">Squat, bench, deadlift technique and programming</div></div>
+        <div class="schedule">Sat — 8:00 AM</div>
+        <div class="level">Advanced</div>
+      </div>
+      <div class="class-row">
+        <div class="idx">04</div>
+        <div><div class="name">Functional Mobility</div><div class="desc">Recovery-focused mobility and stretching</div></div>
+        <div class="schedule">Mon / Thu — 6:00 PM</div>
+        <div class="level">All levels</div>
+      </div>
+      <div class="class-row">
+        <div class="idx">05</div>
+        <div><div class="name">Boxing Fit</div><div class="desc">Pad work and conditioning, no experience needed</div></div>
+        <div class="schedule">Wed / Fri — 7:00 PM</div>
+        <div class="level">Beginner</div>
+      </div>
+      <div class="class-row">
+        <div class="idx">06</div>
+        <div><div class="name">Open Floor</div><div class="desc">Self-guided training, full equipment access</div></div>
+        <div class="schedule">Daily — 5:00 AM – 10:00 PM</div>
+        <div class="level">All levels</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Not sure where to start?</h2>
+    <a href="contact.html" class="btn btn-outline">Talk to a coach</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div>
+      <div class="logo">OVIA<span>GYM</span></div>
+      <p>Built for people who show up. Strength, conditioning and coaching in Pollachi.</p>
+    </div>
+    <div>
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="classes.html">Classes</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Hours</h4>
+      <ul>
+        <li>Mon–Sat: 5:00 AM – 10:00 PM</li>
+        <li>Sun: 7:00 AM – 1:00 PM</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap bottom">
+    <span>© 2026 OVIA GYM. All rights reserved.</span>
+    <a href="admin/login.html" style="color:var(--text-muted);">Staff login</a>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/supabase/2.45.4/supabase.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script>loadOffersBanner();</script>
+</body>
+</html>
